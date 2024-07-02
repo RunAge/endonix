@@ -6,7 +6,7 @@
   home.username = "runage";
   home.homeDirectory = "/home/runage";
 
-  config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -19,7 +19,8 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
+  home.packages = with pkgs; [
+    microsoft-edge
     # pkgs.git
     # pkgs.vscode
     # # Adds the 'hello' command to your environment. It prints a friendly
