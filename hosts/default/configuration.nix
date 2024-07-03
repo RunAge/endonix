@@ -51,6 +51,15 @@
 
   hardware.graphics = {
     enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      libvdpau-va-gl
+    ];
+  };
+  environment.sessionVariables = { 
+    LIBVA_DRIVER_NAME = "nvidia";
+    DOCKER_HOST = unix://$XDG_RUNTIME_DIR/docker.sock;
   };
 
   # Enable the GNOME Desktop Environment.
@@ -147,6 +156,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "ComicShannsMono" "DroidSansMono" ]; })
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -154,7 +167,23 @@
   #  wget
     git
     vscode
+    gnome.gnome-tweaks
+    gnomeExtensions.tray-icons-reloaded
+    nvidia-vaapi-driver
+    microsoft-edge
+    slack
+    alacritty
+    spotify
+    enpass
+    distrobox
+    boxbuddy
   ];
+
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+    daemon.settings.ipv6 = false;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
