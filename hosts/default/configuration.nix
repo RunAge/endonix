@@ -177,6 +177,7 @@
     enpass
     distrobox
     boxbuddy
+    podman
   ];
 
   virtualisation.docker.rootless = {
